@@ -32,4 +32,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
+  define: {
+    'import.meta.env.VITE_ALLOW_CODE': JSON.stringify(process.env.VITE_ALLOW_CODE || 'default_code'),
+  },
 });

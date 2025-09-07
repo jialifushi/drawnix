@@ -3,6 +3,7 @@ import { initializeData } from './initialize-data';
 import { Drawnix } from '@drawnix/drawnix';
 import { PlaitBoard, PlaitElement, PlaitTheme, Viewport } from '@plait/core';
 import localforage from 'localforage';
+import LoginPage from '../components/LoginPage'; // Import LoginPage
 
 const MAIN_BOARD_CONTENT_KEY = 'main_board_content';
 
@@ -19,7 +20,15 @@ export function App() {
     theme?: PlaitTheme;
   }>({ children: [] });
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // New state for login status
+
   useEffect(() => {
+    // Check login status from localStorage on component mount
+    const loggedInStatus = localStorage.getItem('loggedIn');
+    if (loggedInStatus === 'true') {
+      setIsLoggedIn(true);
+    }
+
     const loadData = async () => {
       const storedData = await localforage.getItem(MAIN_BOARD_CONTENT_KEY);
       if (storedData) {
@@ -29,8 +38,19 @@ export function App() {
       setValue({ children: initializeData });
     };
 
-    loadData();
-  }, []);
+    if (isLoggedIn) { // Only load data if logged in
+      loadData();
+    }
+  }, [isLoggedIn]); // Re-run effect when isLoggedIn changes
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  };
+
+  if (!isLoggedIn) {
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
+
   return (
     <Drawnix
       value={value.children}

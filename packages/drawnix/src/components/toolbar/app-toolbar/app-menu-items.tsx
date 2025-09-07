@@ -149,10 +149,10 @@ export const Socials = () => {
   return (
     <MenuItemLink
       icon={GithubIcon}
-      href="https://github.com/plait-board/drawnix"
-      aria-label="GitHub"
+      href="https://news.789168.xyz"
+      aria-label="画累就看会新闻吧"
     >
-      GitHub
+      画累就看会新闻吧
     </MenuItemLink>
   );
 };
